@@ -3,35 +3,6 @@ import * as akairo from "discord-akairo"
 import * as db from "./DB"
 import * as discord from "discord.js"
 
-// Valid attributesthat can be checked.
-// This was an algebraic sum type once,
-// but since types are erased at runtime
-// due to the compilation to untyped JS,
-// this is now an enum instead. Sigh.
-export enum Attribute {
-    UID = "uid",
-    UNAME = "uname",
-    TEXT = "text",
-    CID = "cid",
-    CNAME = "cname"
-}
-
-export interface Condition {
-    readonly attribute: Attribute;
-    readonly regex: string;
-}
-
-export interface ResolvedBridge {
-    readonly bridge_id: number;
-    readonly source_guild: discord.Guild;
-    readonly source_channel: discord.TextChannel;
-    readonly destination_guild: discord.Guild;
-    readonly destination_channel: discord.TextChannel;
-    readonly condition_id: number;
-    readonly attribute: Attribute; 
-    readonly regex: string;
-}
-
 export class BotClient extends akairo.AkairoClient {
     public readonly db: db.Database;
     public readonly cache: Set<string>; // caches input channels, which are unique Snowflakes, to speed up when messages should be discarded
