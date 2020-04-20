@@ -1,0 +1,22 @@
+{
+  "name": "discordcrossposter",
+  "version": "1.0.0",
+  "description": "Authorisation bot for Informatik 2 at Uni Tübingen in summer semester 20.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
+  },
+  "author": "Len",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^13.7.0",
+    "@types/nodemailer": "^6.4.0",
+    "better-sqlite3": "^5.4.3",
+    "better-sqlite3-helper": "^2.3.0",
+    "discord-akairo": "^8.0.0",
+    "discord.js": "^12.1.1",
+    "nodemailer": "^6.4.6",
+    "typescript": "^3.7.5"
+  }
+}

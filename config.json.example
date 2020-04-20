@@ -1,0 +1,15 @@
+{
+    "owner_ids": ["111111"],
+    "prefix": "!",
+    "token": "xxxxxxx",
+    "email": {
+    	"host": "smtp.domain..com",
+        "user": "username",
+        "pass": "secret",
+        "from": "noreply@domain.com"
+    },
+    "roles": {
+    	"auth": "Student",
+    	"tutorials": []
+    }
+}
