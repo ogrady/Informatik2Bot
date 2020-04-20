@@ -94,7 +94,7 @@ export class MessageListener extends Listener {
             message.reply(L.get("EMAIL_MALFORMED"));
         } else if(token) {
             // user sent a token
-            console.log("info", `User ${message.author.username} succesfully verified using token ${token[0]}.`)
+            console.log("info", `User ${message.author.username} sent a token token ${token[0]}.`)
             const verified = this.verifyToken(message.author, token[0]);
             message.reply(L.get(verified ? "TOKEN_ACCEPTED" : "TOKEN_REJECTED"));
         } else {
