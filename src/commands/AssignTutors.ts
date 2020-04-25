@@ -31,7 +31,7 @@ class AssignTutors extends bc.BotCommand {
             const download = wget.download(attachment.url, fname);
             download.on("error", err => console.error(`Error while trying to retrieve ${attachment.url}: ${err}`));
             download.on("end", output => {
-                console.log(`Fisnished downloading attachment to ${fname}`);
+                console.log(`Finished downloading attachment to ${fname}`);
                 const readInterface = readline.createInterface({
                     input: fs.createReadStream(fname),
                     output: process.stdout
@@ -41,8 +41,8 @@ class AssignTutors extends bc.BotCommand {
                     if(tok.length !== 2) {
                         console.error(`Invalid format in line (expected "email address${SEPARATOR}group". Skipping ${line}`)
                     } else {
-                        const email = tok[0];
-                        const group = tok[1];
+                        const email = tok[0].trim();
+                        const group = tok[1].trim();
                         const role: discord.Role | undefined = message.guild?.roles.cache.find(r => r.name === group);
 
                         if(role === undefined) {
