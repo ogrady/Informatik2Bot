@@ -2,6 +2,7 @@ const config = require("../config.json")
 import * as akairo from "discord-akairo"
 import * as db from "./DB"
 import * as discord from "discord.js"
+import * as https from "https";
 
 export class BotClient extends akairo.AkairoClient {
     public readonly db: db.Database;

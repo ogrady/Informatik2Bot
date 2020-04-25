@@ -7,7 +7,39 @@ export interface QueryInfo {
     readonly lastInsertRowid: number;
 }
 
+export interface User {
+    readonly id: number;
+    readonly token: string;
+    readonly email: string;
+    readonly discord_user: string;
+    readonly confirmed: boolean;
+    readonly created: string;
+    readonly verified: string;
+}
+
 export class Database {
+    /**
+    * Finds a user by email. 
+    * @param email the exact email of that user. 
+    * @returns User record, if any else undefined.
+    */
+    public findUser(email: string): User | undefined {
+        return this.execute(db => db.prepare(`
+            SELECT 
+                id,
+                token,
+                email,
+                discord_user,
+                confirmed,
+                created,
+                verified
+            FROM 
+                users
+            WHERE 
+                email = ?
+        `).get(email))
+    }
+
     /**
     * Upserts the token for a specific Discord user.
     * @param user discord user which is unique in the DB. Passing a duplicate will instead update EMail and token for them. 
