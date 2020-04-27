@@ -54,7 +54,7 @@ class AssignTutors extends bc.BotCommand {
                             if(dbentry === undefined) {
                                 console.error("WARNING", `Could not find a database entry for registered user ${email}. Skipping assignment for them.`);
                             } else {
-                                const member: discord.GuildMember | undefined = await message.guild?.members.fetch(dbentry.discord_user);
+                                const member: discord.GuildMember | undefined = await message.guild?.members.fetch(dbentry.discord_user).catch(e => console.error(`Error while fetching ${dbentry.discord_user} for ${email}: ${e}.`));
 
                                 if(member === undefined) {
                                     console.error("WARNING", `User with email ${email} is no longer part of the guild. Skipping assignment for them.`);
