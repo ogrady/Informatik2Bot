@@ -54,17 +54,22 @@ class AssignTutors extends bc.BotCommand {
                             if(dbentry === undefined) {
                                 console.error("WARNING", `Could not find a database entry for registered user ${email}. Skipping assignment for them.`);
                             } else {
-                                const member: discord.GuildMember | undefined = await message.guild?.members.fetch(dbentry.discord_user).catch(e => console.error(`Error while fetching ${dbentry.discord_user} for ${email}: ${e}.`));
+                                try {
+                                    const member: discord.GuildMember | undefined = await message.guild?.members.fetch(dbentry.discord_user);
 
-                                if(member === undefined) {
-                                    console.error("WARNING", `User with email ${email} is no longer part of the guild. Skipping assignment for them.`);
-                                } else {
-                                    member.roles.cache
-                                               .filter(r => r.name.startsWith(GROUP_PREFIX) && r.name !== group)
-                                               .map(r => { console.log("removing " + r.name); member.roles.remove(r) }); // remove all groups that are not the one we are currently assigning, in case this is a re-assignment.
-                                    member.roles.add(role);
-                                    console.log("INFO", `Successfully assigned group '${group}' to user ${member.displayName} (${email})`);
+                                    if(member === undefined) {
+                                        console.error("WARNING", `User with email ${email} is no longer part of the guild. Skipping assignment for them.`);
+                                    } else {
+                                        member.roles.cache
+                                                   .filter(r => r.name.startsWith(GROUP_PREFIX) && r.name !== group)
+                                                   .map(r => { console.log("removing " + r.name); member.roles.remove(r) }); // remove all groups that are not the one we are currently assigning, in case this is a re-assignment.
+                                        member.roles.add(role);
+                                        console.log("INFO", `Successfully assigned group '${group}' to user ${member.displayName} (${email})`);
+                                    }
+                                } catch(e) {
+                                    console.error(`Error while fetching ${dbentry.discord_user} for ${email}: ${e}.`)
                                 }
+
                             }
                         }
                     }
