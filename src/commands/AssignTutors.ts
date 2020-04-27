@@ -63,7 +63,7 @@ class AssignTutors extends bc.BotCommand {
                                         member.roles.cache
                                                    .filter(r => r.name.startsWith(GROUP_PREFIX) && r.name !== group)
                                                    .map(r => { console.log("removing " + r.name); member.roles.remove(r) }); // remove all groups that are not the one we are currently assigning, in case this is a re-assignment.
-                                        member.roles.add(role);
+                                        await member.roles.add(role);
                                         console.log("INFO", `Successfully assigned group '${group}' to user ${member.displayName} (${email})`);
                                     }
                                 } catch(e) {
