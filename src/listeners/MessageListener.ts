@@ -76,10 +76,8 @@ export class MessageListener extends Listener {
         return verified;
     }
 
-    public async exec(message: discord.Message): Promise<void> {
-        if(message.channel instanceof discord.TextChannel) return; // only interested in direct messages
-        if(message.author.id === this.client.user?.id) return; // don't react to own messages...
-
+    private async privateMessage(message: discord.Message): Promise<void> {
+        //if\s*-?\s*(schleife)|(loop)
         const studentMail: RegExpMatchArray | null = message.content.match(/^(.+)\.(.+)@student\.uni-tuebingen\.de$/);
         const token: RegExpMatchArray | null = message.content.match(/^(\w|\d)+$/);
 
@@ -102,6 +100,24 @@ export class MessageListener extends Listener {
             console.log("info", `User ${message.author.username} sent incomprehensible message ${message.content}.`)
             message.reply(L.get("INCOMPREHENSIBLE"));    
         }
+    }
+
+    public async publicMessage(message: discord.Message): Promise<void> {
+        if(message.content.match(/if\s*-?\s*(schleife)|(loop)/i)) {
+            message.reply(L.get("IF_LOOP"));
+        }
+    }
+
+    public async exec(message: discord.Message): Promise<void> {
+        if(message.author.id === this.client.user?.id) return; // don't react to own messages...
+
+        if(message.channel instanceof discord.TextChannel) {
+            this.publicMessage(message);
+        } else {
+            this.privateMessage(message);
+        }
+
+
     }
 }
 
