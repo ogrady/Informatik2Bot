@@ -103,7 +103,7 @@ export class MessageListener extends Listener {
     }
 
     public async publicMessage(message: discord.Message): Promise<void> {
-        if(message.content.match(/if\s*-?\s*(schleife)|(loop)/i)) {
+        if(message.content.match(/if\s*-?\s*(?:(schleife)|(loop))/i)) {
             message.reply(L.get("IF_LOOP"));
         }
     }
