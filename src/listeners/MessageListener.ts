@@ -62,15 +62,21 @@ export class MessageListener extends Listener {
         if(verified) {
             const roleName = config.roles.auth;
             this.client.guilds.cache.map(g => {
-                const member: discord.GuildMember | undefined = g.members.cache.find(m => m.id === user.id);
-                if(member !== undefined) {
-                    const role: discord.Role | undefined = g.roles.cache.find(r => r.name === roleName);
-                    if(role !== undefined) {
-                        member.roles.add(role);
+                console.log("info", `Verifying user ${user.username} on server ${g.name}.`);
+                g.members.fetch(user.id)
+                .then((member : discord.GuildMember | undefined) => {
+                    if(member !== undefined) {
+                        const role: discord.Role | undefined = g.roles.cache.find(r => r.name === roleName);
+                        if(role !== undefined) {
+                            member.roles.add(role);
+                        } else {
+                            console.log("warning", `Found common server ${g.name} with verified user ${user.username}, but the auth role '${roleName}' does not exist there. Skipping role assignment on that server.`);
+                        }
                     } else {
-                        console.log("warning", `Found common server ${g.name} with verified user ${user.username}, but the auth role '${roleName}' does not exist there. Skipping role assignment on that server.`);
+                        console.log("debug", `Tried to verify user ${user.username} on server ${g.name}, but they do not seem to be a member on that server.`);    
                     }
-                }
+                })
+                .catch(error => console.error("error", error)); 
             })
         }
         return verified;
