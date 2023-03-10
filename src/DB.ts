@@ -1,5 +1,5 @@
-import * as sqlite3h from "better-sqlite3-helper";
-import * as discord from "discord.js"
+import * as sqlite3h from 'better-sqlite3-helper';
+import * as discord from 'discord.js';
 
 export interface QueryInfo {
     readonly changes: number;
@@ -36,7 +36,7 @@ export class Database {
                 users
             WHERE 
                 email = ?
-        `).get(email))
+        `).get(email));
     }
 
     /**
@@ -52,7 +52,7 @@ export class Database {
                                                 email = ?, 
                                                 token = ?, 
                                                 created = CURRENT_TIMESTAMP`)
-                             .run(user.id, email, token, email, token));
+            .run(user.id, email, token, email, token));
     }
 
     /**
@@ -69,15 +69,15 @@ export class Database {
                                                 verified = CURRENT_TIMESTAMP,
                                                 token = NULL
                                        WHERE discord_user = ? AND token = ?`)
-                    .run(user.id, token))
-                    .changes > 0;
+            .run(user.id, token))
+            .changes > 0;
     }
 
     /**
     *
     */
     public getDiscordUserByMail(email: string): string[] {
-        return this.execute(db => db.prepare(`SELECT FROM discord_user users WHERE email = ?`).run(email))
+        return this.execute(db => db.prepare('SELECT FROM discord_user users WHERE email = ?').run(email));
     }
 
     /**
@@ -87,14 +87,14 @@ export class Database {
     */
     public execute<T>(f: (sqlite3: sqlite3h.BetterSqlite3Helper.DBInstance) => T): T | undefined  {
         const db: sqlite3h.BetterSqlite3Helper.DBInstance = sqlite3h.default();
-        db.pragma("foreign_keys = ON");
+        db.pragma('foreign_keys = ON');
 
         let res: T | undefined;
         try {
             res = f(db);
         } catch(err) {
             res = undefined;
-            console.error(`DB execute: ${err["message"]} (stack: ${new Error().stack})`);
+            console.error(`DB execute: ${err['message']} (stack: ${new Error().stack})`);
         }
 
         //db.close(); // nope, because of the global instance, this brings all following statements to a screeching halt...

@@ -1,11 +1,11 @@
-import * as bc from "../BotClient";
-import * as discord from "discord.js";
-import { SlashCommandBuilder } from 'discord.js'
+import * as bc from '../BotClient';
+import * as discord from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 
 
-const OUT_DIR = "/tmp/";
-const SEPARATOR = ",";
-const GROUP_PREFIX = "Tutorium";
+const OUT_DIR = '/tmp/';
+const SEPARATOR = ',';
+const GROUP_PREFIX = 'Tutorium';
 
 
 module.exports = {
@@ -18,12 +18,12 @@ module.exports = {
         ),
     async execute(interaction: discord.Interaction) {
         if (!interaction.isChatInputCommand()) return;
-        if (interaction.guild === null) return interaction.reply("Use command in guild");
+        if (interaction.guild === null) return interaction.reply('Use command in guild');
 
         await interaction.deferReply();
 
         const guild = interaction.guild;
-        const attachment = interaction.options.getAttachment("file")!;
+        const attachment = interaction.options.getAttachment('file')!;
         const url = interaction.options.getAttachment('names')!.url;
 
         try {
@@ -32,29 +32,29 @@ module.exports = {
             for (const line of text.split('\n')) {
                 const tok = line.split(SEPARATOR);
                 if(tok.length !== 2) {
-                    console.error(`Invalid format in line (expected "email address${SEPARATOR}group". Skipping ${line}`)
+                    console.error(`Invalid format in line (expected "email address${SEPARATOR}group". Skipping ${line}`);
                 } else {
                     const [email, name] = tok.map(t => t.trim());
 
                     if(email === undefined || name === undefined) {
-                        console.error("ERROR", `Was supposed rename user with email '${email}' to name '${name}'. But at least one of the fields was empty.`);
+                        console.error('ERROR', `Was supposed rename user with email '${email}' to name '${name}'. But at least one of the fields was empty.`);
                     }
                     else {
                         const dusers: string[] = this.getClient().db.getDiscordUserByMail(email);
                         if(dusers.length === 0) {
-                            console.error("WARNING", `No user was found with email '${email}' on server ${interaction.guild?.name}. Skipping this entry in the input file.`)
+                            console.error('WARNING', `No user was found with email '${email}' on server ${interaction.guild?.name}. Skipping this entry in the input file.`);
                         }
                         for(const duser of dusers) {
                             const member: discord.GuildMember | undefined = await interaction.guild?.members.fetch(duser);
                             if(member === undefined) {
-                                console.error("WARNING", `Was supposed to rename the user attached to email '${email}' with Discord id '${duser}'. But that user is not a member of server ${guild.name}. Maybe they have left already. Skipping this entry.`);
+                                console.error('WARNING', `Was supposed to rename the user attached to email '${email}' with Discord id '${duser}'. But that user is not a member of server ${guild.name}. Maybe they have left already. Skipping this entry.`);
                             } else {
                                 const oldName = member.nickname;
                                 try {
-                                    await member.setNickname(name)
-                                    console.log("INFO", `Renamed user ${member.toString()} from '${oldName}' to '${name}'.`)
+                                    await member.setNickname(name);
+                                    console.log('INFO', `Renamed user ${member.toString()} from '${oldName}' to '${name}'.`);
                                 } catch (ex) {
-                                    console.error("ERROR", `Renamed user ${member.toString()} from '${oldName}' to '${name}' failed with error: ${ex}.`)
+                                    console.error('ERROR', `Renamed user ${member.toString()} from '${oldName}' to '${name}' failed with error: ${ex}.`);
                                 }
                             }
                         }
@@ -62,7 +62,7 @@ module.exports = {
                 }
             }
         } catch (err) {
-            console.error(`Error while trying to retrieve ${attachment.url}: ${err}`)
+            console.error(`Error while trying to retrieve ${attachment.url}: ${err}`);
         }
     },
-}
+};
