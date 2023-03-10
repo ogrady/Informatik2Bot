@@ -1,6 +1,5 @@
 import * as sqlite3h from "better-sqlite3-helper";
 import * as discord from "discord.js"
-import * as bot from "BotClient"
 
 export interface QueryInfo {
     readonly changes: number;
@@ -72,6 +71,13 @@ export class Database {
                                        WHERE discord_user = ? AND token = ?`)
                     .run(user.id, token))
                     .changes > 0;
+    }
+
+    /**
+    *
+    */
+    public getDiscordUserByMail(email: string): string[] {
+        return this.execute(db => db.prepare(`SELECT FROM discord_user users WHERE email = ?`).run(email))
     }
 
     /**

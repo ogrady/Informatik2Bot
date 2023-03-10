@@ -9,6 +9,4 @@ const DE: {[key: string]: string} = {
     IF_LOOP: "Trotz der syntaktischen Ähnlichkeit zu Schleifen ist das `if`-Konstrukt **keine** Schleife!! http://if-schleife.de/"
 };
 
-export function get(key: string ): string {
-    return key in DE ? DE[key] : key;
-}
+export const get = (key: string ): string => key in DE ? DE[key] : key;
